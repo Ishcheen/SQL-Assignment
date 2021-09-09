@@ -1,0 +1,60 @@
+CREATE TABLE Salespeople (
+	SNUM INT NOT NULL,
+	SNAME VARCHAR(20) NOT NULL,
+	CITY VARCHAR(50),
+	COMM INT, 
+	PRIMARY KEY (SNUM)
+);
+CREATE TABLE Customers (
+	CNUM SERIAL NOT NULL UNIQUE,
+	CNAME VARCHAR(30) NOT NULL,
+	CITY VARCHAR(50),
+	RATINGS INT,
+	SNUM INT,
+	PRIMARY KEY (CNUM),
+	FOREIGN KEY (SNUM) 
+		REFERENCES Salespeople (SNUM)
+);
+CREATE TABLE Orders (
+	ONUM INT NOT NULL UNIQUE,
+	AMT NUMERIC(10,2),
+	ODATE DATE,
+	CNUM INT,
+	SNUM INT,
+	PRIMARY KEY (ONUM),
+	FOREIGN KEY (SNUM) 
+		REFERENCES Salespeople (SNUM),
+	FOREIGN KEY (CNUM) 
+		REFERENCES Customers (CNUM)
+);
+
+ALTER TABLE customers
+	ALTER COLUMN cnum TYPE INT;
+
+INSERT INTO salespeople (snum,sname,city,comm)
+VALUES (1001,'Peel','London',12),
+		(1002,'Serres','SanJose',13),
+		(1004,'Motika','London',11),
+		(1007,'Rifkin','Barcelona',15),
+		(1003,'AxelRod','New York',10),
+		(1008,'Fran','London',25);
+INSERT INTO customers (cnum,cname,city,ratings,snum)
+VALUES  (2001,'Hoffman','London',100,1001),
+		(2002,'Giovanni','Rome',200,1003),
+		(2003,'Liu','SanJose',200,1002),
+		(2004,'Grass','Berlin',300,1002),
+		(2006,'Ciemens','London',100,1001),
+		(2008,'Cisneros','SanJose',300,1007),
+		(2007,'Pereira','Rome',100,1004);
+INSERT INTO orders (onum,amt,odate,cnum,snum)
+VALUES  (3001,18.69,'10-03-1990',2008,1007),
+		(3003,767.19,'10-03-1990',2001,1001),
+		(3002,1900.10,'10-03-1990',2007,1004),
+		(3005,5160.45,'10-03-1990',2003,1002),
+		(3006,1098.16,'10-03-1990',2008,1007),
+		(3009,1713.23,'10-04-1990',2002,1003),
+		(3007,75.75,'10-04-1990',2004,1002),
+		(3008,4723.00,'10-05-1990',2006,1001),
+		(3010,1309.95,'10-05-1990',2004,1002),
+		(3011,9891.88,'10-05-1990',2006,1001);
+		
